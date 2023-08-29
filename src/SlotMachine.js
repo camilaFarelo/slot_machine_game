@@ -8,7 +8,9 @@ import styleClasses from './SlotMachine.module.scss';
 import Backgroundmain from './media/backgroundmain.jpg';
 import Win from './media/win.jpg';
 import BackgroundInit from './media/wallpaper2.jpeg';
+import Gameover from './media/gameover.png';
 import Lose from './media/lose.png';
+import GameOverBg from './media/losebg.png';
 import EnterNameAndLevel from './EnterNameAndLevel';
 import UserInfo from './UserInfo';
 
@@ -47,18 +49,25 @@ const SlotMachine = () => {
     const { wheels, startSpinningHandler, stopSpinningHandler, onSubmit, userForm, resultOptions } = useSlotMachine();
     const {formData} = userForm;
     const srcImgResult = wheels.result === 'winner' ? Win : Lose;
+    const resultsContainerStyles = wheels.showGameOver ? {...styles.resultsContainer, backgroundImage: `url(${GameOverBg})`, backgroundSize: 'contain'} : styles.resultsContainer;
     return (
         <div className={styleClasses['slot-machine']} style={{position: 'relative', backgroundImage: `url(${!userForm.hideForm ? BackgroundInit : Backgroundmain})`, backgroundSize: 'contain'}}>
             {!userForm.hideForm && <EnterNameAndLevel userForm={userForm} />}
             {userForm.hideForm && <div>
                 <UserInfo formData={formData}/>
                 {(wheels.result || wheels.showGameOver) && 
-                    <div style={styles.resultsContainer}>
+                    <div style={resultsContainerStyles}>
                         <div style={{textAlign: 'center', width: '100%', paddingTop: '17vh'}}>
-                            <div style={styles.resultText}>
-                                <img className='win-img' src={srcImgResult} style={{borderRadius: '50%', width: '58vh'}}/>
-                            </div>
-                            <Button title='Next' onClick={wheels.onNext} />
+                            {!wheels.showGameOver && 
+                                <div style={styles.resultText}>
+                                    <img className='win-img' src={srcImgResult} style={{borderRadius: '50%', width: '58vh'}}/>
+                                </div>
+                            }
+                            {wheels.showGameOver && 
+                                <div><img className='win-img' src={Gameover} width={300}/></div>
+                            }
+                            {!wheels.showGameOver && <Button title='Next' onClick={wheels.onNext} />}
+                            {wheels.showGameOver && <Button title='Try Again' onClick={wheels.onRestart} />}
                         </div>
                         
                     </div>

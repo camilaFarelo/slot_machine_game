@@ -48,7 +48,7 @@ const useSlotMachine = () => {
     const [formData, setFormData] = useState({name: '', level: '', lives: 5, character: null});
     const [hideForm, setHideForme] = useState(false);
     const [options, setOptions] = useState(null);
-    const [showGameOver, setShowGameOver] = useState(false);
+    const [showGameOver, setShowGameOver] = useState(true);
 
     const timerRef = useRef();
     const intervalRef = useRef();
@@ -56,6 +56,17 @@ const useSlotMachine = () => {
     const onSetInputValue = debounce(
       (event) => {setInputValue(event.target.value)}, 500,
     );
+
+    const onRestart = () => {
+        setResult('');
+        setStatus('');
+        setInputValue('');
+        setScore('');
+        setFormData({name: '', level: '', lives: 5, character: null})
+        setHideForme(false);
+        setOptions(null);
+        setShowGameOver(false);
+    }
 
     const onSubmitLevelAndName = (event) => setHideForme(true);
     
@@ -138,7 +149,7 @@ const useSlotMachine = () => {
     }
 
     return {
-        wheels: { indexes, status, score, showResultInput, inputValue, result, onNext, showGameOver },
+        wheels: { indexes, status, score, showResultInput, inputValue, result, onNext, showGameOver, onRestart },
         startSpinningHandler,
         stopSpinningHandler,
         onSetInputValue,
