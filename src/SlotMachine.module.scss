@@ -1,0 +1,73 @@
+@import './styles/abstracts/_variables.scss';
+@import './styles/abstracts/_mixins.scss';
+
+.slot-machine {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    &__header {
+        margin: 8vh 0;
+    }
+    &__title {
+        font-size: 2rem;
+        text-align: center;
+
+        @include md {
+            font-size: 4rem;
+            margin: -1rem 0 -1.5rem;
+        }
+    }
+
+    &__wheels-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: calc(8vh - 3rem) 8vh calc(8vh - 1rem); // fix for wheel's margin
+
+        @include sm {
+            flex-direction: row;
+        }
+        @include md {
+            margin: 0 0 8vh;
+        }
+    }
+
+    &__btns-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        button:not(:last-child) {
+            margin-bottom: 1.125rem;
+        }
+    }
+    &__option-btn {
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+        &:hover {
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+    }
+}
+
+.win-img {
+	animation: zoomInOut 5s infinite alternate;
+}
+
+@keyframes zoomInOut {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2); /* Adjust the scale factor for zoom in/out */
+    }
+}
+
+input, select {
+    border: none;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+
