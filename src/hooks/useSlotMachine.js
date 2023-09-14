@@ -15,10 +15,10 @@ const getRandoms = () => [getRandom(), getRandom(), getRandom()];
 
 const useSlotMachine = () => {
     const [playSpin, stopSpin] = useSound(spin);
-    const [playWin, stopWin] = useSound(win);
-    const [playLose, stopLose] = useSound(lose);
-    const [playSuperWin, stopSuperWin] = useSound(superWin);
-    const [playSmallLose, stopSmallLosen] = useSound(smallLose);
+    const [playWin] = useSound(win);
+    const [playLose] = useSound(lose);
+    const [playSuperWin] = useSound(superWin);
+    const [playSmallLose] = useSound(smallLose);
     const [result, setResult] = useState('');
     const [indexes, setIndexes] = useState(getRandoms());
     const [status, setStatus] = useState('');
@@ -64,6 +64,9 @@ const useSlotMachine = () => {
         const num2 = document.getElementById("number2") && document.getElementById("number2").textContent;
         const operation = document.getElementById("mathsigne") && document.getElementById("mathsigne").textContent;
         let result;
+        if (!num1 || !num2 || !operation) {
+            return false;
+        };
         switch (operation) {
             case '+':
                 result = toNumber(num1) + toNumber(num2);
@@ -104,11 +107,7 @@ const useSlotMachine = () => {
         intervalRef.current = setInterval(() => {
             setIndexes(getRandoms());
         }, 50);
-
-        timerRef.current = setTimeout(() => {
-            stopSpinningHandler();
-        }, 10000);
-    }, [setIndexes, stopSpinningHandler, setStatus]);
+    }, [setIndexes, setStatus]);
 
     const onSubmit = (value) => {
       const winOrLose = options.correct === toNumber(value) ? 'winner' : 'loser';
@@ -118,7 +117,7 @@ const useSlotMachine = () => {
             stopSpin.stop();
             playLose();
             setScore(0);
-            setShowGameOver(true);
+            return setShowGameOver(true);
         } else {
             playSmallLose();
             stopSpin.stop();
@@ -129,24 +128,23 @@ const useSlotMachine = () => {
         if (score + 100 >= 1000) {
             playSuperWin();
             stopSpin.stop();
-            setShowWinner(true);
+            return setShowWinner(true);
         } else {
             playWin();
             setScore(score + 100);
         }
       }
-      onNext();
+        onNext();
       setResult(winOrLose);
     }
 
     const onNext = () => {
-        setResult('');
         setOptions(null);
         startSpinningHandler();
     }
 
     return {
-        wheels: { indexes, status, score, showResultInput, inputValue, result, onNext, showGameOver, onRestart },
+        wheels: { indexes, status, score, showResultInput, inputValue, result, showGameOver, onRestart },
         startSpinningHandler,
         stopSpinningHandler,
         onSetInputValue,
