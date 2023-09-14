@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/slot_machine_game/static/css/main.10ac71fc.css",
+    "main.js": "/slot_machine_game/static/js/main.9aee8797.js",
+    "static/js/845.bf7b4616.chunk.js": "/slot_machine_game/static/js/845.bf7b4616.chunk.js",
+    "static/js/787.ee69485e.chunk.js": "/slot_machine_game/static/js/787.ee69485e.chunk.js",
+    "static/media/win.jpg": "/slot_machine_game/static/media/win.0dafdc79f505d86ca832.jpg",
+    "static/media/backgroundmain.jpg": "/slot_machine_game/static/media/backgroundmain.a4f252593488def0ebeb.jpg",
+    "static/media/ringtones-super-mario-bros.mp3": "/slot_machine_game/static/media/ringtones-super-mario-bros.215dea3f4d82468c81df.mp3",
+    "static/media/superwin.mp3": "/slot_machine_game/static/media/superwin.a4c1c383a2f45a4a8982.mp3",
+    "static/media/marioBros.png": "/slot_machine_game/static/media/marioBros.856d91d9ad952dc31ba4.png",
+    "static/media/spin.mp3": "/slot_machine_game/static/media/spin.795597ae88ef6ba93679.mp3",
+    "static/media/losebg.png": "/slot_machine_game/static/media/losebg.6d3aa54bb057489bfd03.png",
+    "static/media/yoshi.png": "/slot_machine_game/static/media/yoshi.f7d64a0a292e898e9765.png",
+    "static/media/peach.png": "/slot_machine_game/static/media/peach.d0523c3691ad694b2a3e.png",
+    "static/media/orange.png": "/slot_machine_game/static/media/orange.447ded6bd33f7fc073a9.png",
+    "static/media/wallpaper2.jpeg": "/slot_machine_game/static/media/wallpaper2.118097e902914e14fbb2.jpeg",
+    "static/media/banana.png": "/slot_machine_game/static/media/banana.5af492d3bba542935bdc.png",
+    "static/media/monkey.png": "/slot_machine_game/static/media/monkey.5f0da3121bb7f3d83c6a.png",
+    "static/media/win.mp3": "/slot_machine_game/static/media/win.8d23566b35621981ed38.mp3",
+    "static/media/gameover.png": "/slot_machine_game/static/media/gameover.8319ac36b04c1780cc13.png",
+    "static/media/lose.mp3": "/slot_machine_game/static/media/lose.822868fbf636e60620c4.mp3",
+    "static/media/star.png": "/slot_machine_game/static/media/star.af68be66f120a7bdfd2d.png",
+    "static/media/strawberry.png": "/slot_machine_game/static/media/strawberry.433e58fd7dcff7fb9ec6.png",
+    "static/media/smallLose.mp3": "/slot_machine_game/static/media/smallLose.ee5eed0ce7889f3cfc04.mp3",
+    "index.html": "/slot_machine_game/index.html",
+    "main.10ac71fc.css.map": "/slot_machine_game/static/css/main.10ac71fc.css.map",
+    "main.9aee8797.js.map": "/slot_machine_game/static/js/main.9aee8797.js.map",
+    "845.bf7b4616.chunk.js.map": "/slot_machine_game/static/js/845.bf7b4616.chunk.js.map",
+    "787.ee69485e.chunk.js.map": "/slot_machine_game/static/js/787.ee69485e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.10ac71fc.css",
+    "static/js/main.9aee8797.js"
+  ]
+}
