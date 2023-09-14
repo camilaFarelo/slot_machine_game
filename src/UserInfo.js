@@ -51,7 +51,7 @@ const character = {
 };
 
 const UserInfo = (props) => {
-  const {formData} = props;
+  const {formData, score} = props;
   return (
     <div style={styles.userContainer}>
       <div style={{width: '90px'}}>
@@ -61,12 +61,13 @@ const UserInfo = (props) => {
         <p style={{margin: '0px', textAlign: 'center'}}>{formData.name}</p>
       </div>
       <div style={{marginLeft: '10px'}}>
-        <div style={styles.level}>Level: {formData.level}</div>
+        <div style={styles.level}>{formData.level}</div>
         {Array.from({length: formData.lives}, (_, i) => {
           return (
             <img width='20' src={Star} alt={`star-${i}`}/>
           );
         })}
+        <p>Score: {score | 0} </p>
       </div>
     </div>
   );

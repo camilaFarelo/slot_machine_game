@@ -1,54 +1,35 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import {debounce, toNumber, shuffle} from 'lodash';
+import useSound from 'use-sound';
+
+import spin from '../media/spin.mp3';
+import win from '../media/win.mp3';
+import lose from '../media/lose.mp3';
+import superWin from '../media/superwin.mp3';
+import smallLose from '../media/smallLose.mp3';
 
 import { logger } from './../scripts/utils';
 
 const getRandom = () => Math.floor(Math.random() * 200);
 const getRandoms = () => [getRandom(), getRandom(), getRandom()];
 
-
-export const getScore = (valuesArr) => {
-    const map = new Map();
-    const valuesLen = valuesArr.length;
-
-    for (let i = 0; i < valuesLen; i += 1) {
-        map.set(valuesArr[i], i);
-    }
-
-    // no match
-    if (map.size === valuesLen) return '';
-
-    // full match
-    if (map.size === 1) return 'full';
-
-    // non-consecutive
-    // consecutive
-    for (let i = 0; i < valuesLen; i += 1) {
-        const val = valuesArr[i];
-
-        if (map.has(val) && map.get(val) === i) continue;
-
-        if (map.has(val) && map.get(val) === i + 1) {
-            return 'consecutive';
-        } else {
-            return 'inconsecutive';
-        }
-    }
-
-    return '';
-};
-
 const useSlotMachine = () => {
+    const [playSpin, stopSpin] = useSound(spin);
+    const [playWin, stopWin] = useSound(win);
+    const [playLose, stopLose] = useSound(lose);
+    const [playSuperWin, stopSuperWin] = useSound(superWin);
+    const [playSmallLose, stopSmallLosen] = useSound(smallLose);
     const [result, setResult] = useState('');
     const [indexes, setIndexes] = useState(getRandoms());
     const [status, setStatus] = useState('');
     const [inputValue, setInputValue] = useState('');
     const [showResultInput, setShowResultInput] = useState(false);
-    const [score, setScore] = useState('');
+    const [score, setScore] = useState(0);
     const [formData, setFormData] = useState({name: '', level: '', lives: 5, character: null});
     const [hideForm, setHideForme] = useState(false);
     const [options, setOptions] = useState(null);
-    const [showGameOver, setShowGameOver] = useState(true);
+    const [showGameOver, setShowGameOver] = useState(false);
+    const [showWinner, setShowWinner] = useState(false);
 
     const timerRef = useRef();
     const intervalRef = useRef();
@@ -61,26 +42,27 @@ const useSlotMachine = () => {
         setResult('');
         setStatus('');
         setInputValue('');
-        setScore('');
+        setScore(0);
         setFormData({name: '', level: '', lives: 5, character: null})
         setHideForme(false);
         setOptions(null);
         setShowGameOver(false);
+        setShowWinner(false);
+        setShowResultInput(false);
     }
 
     const onSubmitLevelAndName = (event) => setHideForme(true);
     
     const stopSpinningHandler = useCallback(() => {
+        stopSpin.stop();
         logger.debug('[useSlotMachine]', 'stopSpinningHandler');
-        logger.debug('👩 score is:', getScore(indexes) || 'no match');
 
         setIndexes(indexes);
         setStatus('spun');
         setShowResultInput(true);
-        setScore(getScore(indexes));
-        const num1 = document.getElementById("number1").textContent;
-        const num2 = document.getElementById("number2").textContent;
-        const operation = document.getElementById("mathsigne").textContent;
+        const num1 = document.getElementById("number1") && document.getElementById("number1").textContent;
+        const num2 = document.getElementById("number2") && document.getElementById("number2").textContent;
+        const operation = document.getElementById("mathsigne") && document.getElementById("mathsigne").textContent;
         let result;
         switch (operation) {
             case '+':
@@ -109,9 +91,8 @@ const useSlotMachine = () => {
     }, [indexes]);
 
     const startSpinningHandler = useCallback(() => {
+        playSpin();
         logger.debug('[useSlotMachine]', 'startSpinningHandler');
-
-        setScore('');
         setStatus('spinning');
         setShowResultInput(false);
 
@@ -134,11 +115,27 @@ const useSlotMachine = () => {
       if (winOrLose === 'loser') {
         const lives = formData.lives - 1;
         if (!lives) {
+            stopSpin.stop();
+            playLose();
+            setScore(0);
             setShowGameOver(true);
         } else {
+            playSmallLose();
+            stopSpin.stop();
+            setScore(score ? score - 10 : 0);
             setFormData({...formData, lives: formData.lives - 1});
         }
+      } else {
+        if (score + 100 >= 1000) {
+            playSuperWin();
+            stopSpin.stop();
+            setShowWinner(true);
+        } else {
+            playWin();
+            setScore(score + 100);
+        }
       }
+      onNext();
       setResult(winOrLose);
     }
 
@@ -154,8 +151,9 @@ const useSlotMachine = () => {
         stopSpinningHandler,
         onSetInputValue,
         onSubmit,
-        userForm: {setFormData, formData, handleSubmit: onSubmitLevelAndName, hideForm},
+        userForm: {setFormData, formData, handleSubmit: onSubmitLevelAndName, hideForm, score},
         resultOptions: options,
+        winner: {showWinner}
     };
 };
 

@@ -39,7 +39,13 @@ const styles = {
   characterSelected: {
     // border: '1px solid #f03617',
     outlineWidth: '5px',
-  }
+  },
+  formContainer: {
+    width: '300px',
+    background: 'white',
+    borderRadius: '20px',
+    padding: '0 20px 20px',
+  },
 };
 
 const character = {
@@ -51,10 +57,9 @@ const character = {
 const EnterNameAndLevel = ({userForm}) => {
   const {setFormData, formData, handleSubmit} = userForm;
   const disabledButton = isEmpty(formData.name) || isEmpty(formData.level) || isEmpty(formData.character);
-  console.log('disabledButton---0', disabledButton);
   return (
     <div style={styles.container}>
-      <form onSubmit={handleSubmit} style={{width: '300px'}}>
+      <form onSubmit={handleSubmit} style={styles.formContainer}>
         <h1>Math Game</h1>
         <div>
           <label>Personaje</label>
@@ -68,15 +73,15 @@ const EnterNameAndLevel = ({userForm}) => {
         </div>
         <div>
           <label>Name</label>
-          <input style={{width: '100%', height: '20px', marginBottom: '5px'}} onChange={(event) => setFormData({...formData, name: event.target.value})}/>
+          <input style={{width: '96%', height: '20px', marginBottom: '5px', border: '1px solid black'}} onChange={(event) => setFormData({...formData, name: event.target.value})}/>
         </div>
         <div>
           <label>Nivel</label>
-          <select style={{width: '100%'}} name="levels" id="levels" onChange={(event) => setFormData({...formData, level: event.target.value})}>
-            <option value="level1">level 1</option>
-            <option value="level2">level 2</option>
-            <option value="level3">level 3</option>
-            <option value="level4">level 4</option>
+          <select style={{width: '100%',  height: '32px', border: '1px solid black'}} name="levels" id="levels" onChange={(event) => setFormData({...formData, level: event.target.value})}>
+            <option value="" disabled selected>Select your option</option>
+            <option value="level1">level 1 (suma/restas)</option>
+            <option value="level2">level 2 (suma/restas/multiplicacion)</option>
+            <option value="level3">level 3 (suma/restas/multiplicacion/division)</option>
           </select>
         </div>
         <input type="submit" value="Submit" style={styles.submitBtn} disabled={disabledButton}/>

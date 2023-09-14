@@ -1,18 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import useSlotMachine from './hooks/useSlotMachine';
 import Wheel from './Wheel';
-import Message from './Message';
 import Button from './Button';
 import styleClasses from './SlotMachine.module.scss';
 import Backgroundmain from './media/backgroundmain.jpg';
-import Win from './media/win.jpg';
 import BackgroundInit from './media/wallpaper2.jpeg';
-import Gameover from './media/gameover.png';
-import Lose from './media/lose.png';
-import GameOverBg from './media/losebg.png';
 import EnterNameAndLevel from './EnterNameAndLevel';
 import UserInfo from './UserInfo';
+import GameOver from './GameOver';
+import Winner from './Winner';
+import Sound from './Sound';
 
 const styles = {
     resultsContainer: {
@@ -46,32 +44,16 @@ const styles = {
     }
 }
 const SlotMachine = () => {
-    const { wheels, startSpinningHandler, stopSpinningHandler, onSubmit, userForm, resultOptions } = useSlotMachine();
+    const { wheels, startSpinningHandler, stopSpinningHandler, onSubmit, userForm, resultOptions, winner } = useSlotMachine();
     const {formData} = userForm;
-    const srcImgResult = wheels.result === 'winner' ? Win : Lose;
-    const resultsContainerStyles = wheels.showGameOver ? {...styles.resultsContainer, backgroundImage: `url(${GameOverBg})`, backgroundSize: 'contain'} : styles.resultsContainer;
     return (
         <div className={styleClasses['slot-machine']} style={{position: 'relative', backgroundImage: `url(${!userForm.hideForm ? BackgroundInit : Backgroundmain})`, backgroundSize: 'contain'}}>
+            <Sound showWinner={winner.showWinner}/>
             {!userForm.hideForm && <EnterNameAndLevel userForm={userForm} />}
             {userForm.hideForm && <div>
-                <UserInfo formData={formData}/>
-                {(wheels.result || wheels.showGameOver) && 
-                    <div style={resultsContainerStyles}>
-                        <div style={{textAlign: 'center', width: '100%', paddingTop: '17vh'}}>
-                            {!wheels.showGameOver && 
-                                <div style={styles.resultText}>
-                                    <img className='win-img' src={srcImgResult} style={{borderRadius: '50%', width: '58vh'}}/>
-                                </div>
-                            }
-                            {wheels.showGameOver && 
-                                <div><img className='win-img' src={Gameover} width={300}/></div>
-                            }
-                            {!wheels.showGameOver && <Button title='Next' onClick={wheels.onNext} />}
-                            {wheels.showGameOver && <Button title='Try Again' onClick={wheels.onRestart} />}
-                        </div>
-                        
-                    </div>
-                }
+                <UserInfo formData={formData} score={userForm.score}/>
+                {(wheels.showGameOver) && <GameOver wheels={wheels} />}
+                {winner.showWinner && <Winner wheels={wheels} />}
                 <header className={styleClasses['slot-machine__header']}>
                     <h1 className={styleClasses['slot-machine__title']}>Slot Machine</h1>
                 </header>
@@ -79,7 +61,10 @@ const SlotMachine = () => {
                 <div className={styleClasses['slot-machine__wheels-wrapper']}>
                     {wheels.indexes &&
                         wheels.indexes.length &&
-                        wheels.indexes.map((randomIndex, currIndex) => <Wheel key={currIndex} signedWheel={currIndex === 1} containerIndex={currIndex} randomIndex={randomIndex} />)}
+                        wheels.indexes.map(
+                            (randomIndex, currIndex) => <Wheel key={currIndex} level={userForm.formData.level} signedWheel={currIndex === 1} containerIndex={currIndex} randomIndex={randomIndex} />
+                        )
+                    }
                 </div>
 
                 {!resultOptions?.options?.length &&

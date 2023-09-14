@@ -21,10 +21,24 @@ const components = {
 };
 
 const signos = {
-    'Strawberry': '+',
-    'Orange': '-',
-    'Banana': 'x',
-    'Monkey': '+',
+    level1: {
+        'Strawberry': '+',
+        'Orange': '-',
+        'Banana': '+',
+        'Monkey': '-',
+    },
+    level2: {
+        'Strawberry': '+',
+        'Orange': '-',
+        'Banana': 'x',
+        'Monkey': 'x',
+    },
+    level3: {
+        'Strawberry': '+',
+        'Orange': '-',
+        'Banana': 'x',
+        'Monkey': '/',
+    }
 };
 
 const styles = {
@@ -44,7 +58,7 @@ const styles = {
 };
   
 
-const Wheel = ({ randomIndex, containerIndex, signedWheel }) => {
+const Wheel = ({ randomIndex, containerIndex, signedWheel, level }) => {
     const wheelItems = [].concat(...new Array(200).fill(items));
     const getSpanId = (idx) => {
         if (randomIndex === idx) {
@@ -58,13 +72,14 @@ const Wheel = ({ randomIndex, containerIndex, signedWheel }) => {
         }
         return '';
     }
+    const mathSign = signos[level];
     return (
         <div className={styleClasses['wheel']}>
             {wheelItems.map((wheelItem, idx) => {
                 const ImageSvg = components[wheelItem];
                 return (
                     <div className={randomIndex === idx ? styleClasses['active'] : ''} style={randomIndex === idx ? {position: 'absolute'} : {}}>
-                        <span id={getSpanId(idx)} style={styles.numberBag}>{signedWheel ? signos[wheelItem] : idx}</span>
+                        <span id={getSpanId(idx)} style={styles.numberBag}>{signedWheel ? mathSign[wheelItem] : idx}</span>
                         <img src={ImageSvg} alt={wheelItem} width={80} />
                     </div>
                 );
